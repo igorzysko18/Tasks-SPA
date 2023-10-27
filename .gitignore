@@ -1,0 +1,15 @@
+logs/
+*.log
+
+/Api-Spa/node_modules/
+/Api-Spa/spaDb.db
+package-lock.json
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.local
