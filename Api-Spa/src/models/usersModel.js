@@ -1,9 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('spaDb.db');
 
-const UserModel = {};
+const userModel = {};
 
-UserModel.createUser = (userData, callback) => {
+userModel.createUser = (userData, callback) => {
   const { username, password, create_date } = userData;
 
   db.run(
@@ -19,7 +19,7 @@ UserModel.createUser = (userData, callback) => {
   );
 };
 
-UserModel.getUserById = (userId, callback) => {
+userModel.getUserById = (userId, callback) => {
   db.get('SELECT * FROM users WHERE id = ?', [userId], (err, row) => {
     if (err) {
       callback(err, null);
@@ -29,7 +29,7 @@ UserModel.getUserById = (userId, callback) => {
   });
 };
 
-UserModel.updateUser = (userId, updatedUserData, callback) => {
+userModel.updateUser = (userId, updatedUserData, callback) => {
     const { username, password} = updatedUserData;
     db.run(
       'UPDATE users SET username = ?, password = ? WHERE id = ?',
@@ -44,7 +44,7 @@ UserModel.updateUser = (userId, updatedUserData, callback) => {
     );
   };
   
-  UserModel.deleteUser = (userId, callback) => {
+  userModel.deleteUser = (userId, callback) => {
     db.run('DELETE FROM users WHERE id = ?', [userId], function (err) {
       if (err) {
         callback(err);
@@ -54,7 +54,7 @@ UserModel.updateUser = (userId, updatedUserData, callback) => {
     });
   };
 
-  UserModel.findByUsername = (username, callback) => {
+  userModel.findByUsername = (username, callback) => {
     db.get('SELECT * FROM users WHERE username = ?', username, (err, row) => {
       if (err) {
         callback(err, null);
@@ -65,4 +65,4 @@ UserModel.updateUser = (userId, updatedUserData, callback) => {
   };
 
 
-module.exports = UserModel;
+module.exports = userModel;

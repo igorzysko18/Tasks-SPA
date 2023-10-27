@@ -3,7 +3,7 @@ const tasksModel = require('../models/tasksModel');
 const taskController = {};
 
 taskController.createTask = (req, res) => {
-  const taskData = req.body;
+  let taskData = req.body;
 
   tasksModel.createTask(taskData, (err, newTask) => {
     if (err) {
@@ -14,7 +14,7 @@ taskController.createTask = (req, res) => {
 };
 
 taskController.getTaskById = (req, res) => {
-  const taskId = req.params.id;
+  let taskId = req.params.id;
 
   tasksModel.getTaskById(taskId, (err, task) => {
     if (err) {
@@ -30,8 +30,8 @@ taskController.getTaskById = (req, res) => {
 };
 
 taskController.updateTask = (req, res) => {
-  const taskId = req.params.id;
-  const taskData = req.body;
+  let taskId = req.params.id;
+  let taskData = req.body;
 
   tasksModel.updateTask(taskId, taskData, (err, updatedTask) => {
     if (err) {
@@ -42,7 +42,7 @@ taskController.updateTask = (req, res) => {
 };
 
 taskController.deleteTask = (req, res) => {
-  const taskId = req.params.id;
+  let taskId = req.params.id;
 
   tasksModel.deleteTask(taskId, (err) => {
     if (err) {
@@ -53,7 +53,7 @@ taskController.deleteTask = (req, res) => {
 };  
 
   taskController.getTasksByUserId = (req, res) => {
-    const userId = req.params.userId;
+    let userId = req.params.userId;
   
     tasksModel.findTasksByUserId(userId, (err, tasks) => {
       if (err) {
@@ -63,8 +63,6 @@ taskController.deleteTask = (req, res) => {
       res.status(200).json(tasks);
     });
   };
-
-
 
 
 module.exports = taskController;

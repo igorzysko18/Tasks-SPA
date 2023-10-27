@@ -8,6 +8,6 @@ router.post('', verifyBearerKey, tasksValidator.validateCreateTask, taskControll
 router.get('/:id', verifyBearerKey, taskController.getTaskById);
 router.get('/user/:userId', verifyBearerKey, taskController.getTasksByUserId);
 router.put('/:id', verifyBearerKey, tasksValidator.validateUpdateTask, taskController.updateTask);
-router.delete('/:id', verifyBearerKey, taskController.deleteTask);
+router.delete('/:id', verifyBearerKey,tasksValidator.validateDeleteTask, taskController.deleteTask);
 
 module.exports = router;

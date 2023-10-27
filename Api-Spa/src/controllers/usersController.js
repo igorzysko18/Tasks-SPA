@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const UserModel = require('../models/usersModel');
+const userModel = require('../models/usersModel');
 const secretKey = '788847503fb7054ab1fa63e0ca9e4252';
 
 exports.createUser = (req, res) => {
   let userData = req.body; 
 
-  UserModel.findByUsername(userData.username, (err, user) => {
+  userModel.findByUsername(userData.username, (err, user) => {
     if (err) {
       return res.status(500).json({ error: 'Erro ao fazer login.' });
     }
@@ -19,7 +19,7 @@ exports.createUser = (req, res) => {
     
         userData.password = hashedPassword;
     
-        UserModel.createUser(userData, (createErr, newUser) => {
+        userModel.createUser(userData, (createErr, newUser) => {
           if (createErr) {
             return res.status(500).json({ error: 'Erro ao criar o usuário.' });
           }
@@ -36,7 +36,7 @@ exports.createUser = (req, res) => {
 exports.userLogin = (req, res) => {
     let { username, password } = req.body;
   
-    UserModel.findByUsername(username, (err, user) => {
+    userModel.findByUsername(username, (err, user) => {
       if (err) {
         return res.status(500).json({ error: 'Erro ao fazer login.' });
       }
@@ -69,7 +69,7 @@ exports.userLogin = (req, res) => {
 
       userData.password = hashedPassword;
 
-        UserModel.updateUser(userId, userData, (err, updatedUser) => {
+        userModel.updateUser(userId, userData, (err, updatedUser) => {
         if (err) {
           return res.status(500).json({ error: 'Erro ao atualizar a senha do usuário.' });
         }

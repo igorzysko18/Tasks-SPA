@@ -1,11 +1,4 @@
-const { body, validationResult } = require('express-validator');
-
-const isHourFormat = (value) => {
-  if (!/^\d+(\.\d+)?$/.test(value)) {
-    throw new Error('A duração deve estar no formato de horas (por exemplo, "1.5" para 1 hora e 30 minutos).');
-  }
-  return true;
-};
+const { param, body, validationResult } = require('express-validator');
 
 exports.validateCreateTask = [
   body('title')
@@ -34,6 +27,9 @@ exports.validateCreateTask = [
 ];
 
 exports.validateUpdateTask = [
+  param('id')
+  .isInt()
+  .withMessage('ID de task inválido.'),
   body('title')
     .isString()
     .optional(),
@@ -54,4 +50,17 @@ exports.validateUpdateTask = [
     }
     next();
   },
+];
+
+exports.validateDeleteTask = [
+  param('id')
+  .isInt()
+  .withMessage('ID de task inválido.'),
+(req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+},
 ];

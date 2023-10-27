@@ -9,8 +9,10 @@ app.use(express.json());
 
 const userRoutes = require('./routes/usersRoutes');
 const taskRoutes = require('./routes/tasksRoutes')
+const tagsRoutes = require('./routes/tagsRoutes')
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/tags', tagsRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Rota não encontrada');

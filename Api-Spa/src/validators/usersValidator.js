@@ -3,10 +3,10 @@ const { param, body, validationResult } = require('express-validator');
 exports.validateCreateUser = [
   body('username')
     .isString()
-    .isLength({ min: 3 })
+    .isLength({ min: 6, max: 30 })
     .withMessage('O nome de usuário deve ter pelo menos 3 caracteres.'),
   body('password')
-    .isLength({ min: 8 })
+    .isLength({ min: 8, max: 60 })
     .withMessage('A senha deve ter pelo menos 8 caracteres.')
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])/)
     .withMessage('A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula e um caractere especial.'),
@@ -22,7 +22,7 @@ exports.validateCreateUser = [
 exports.validateLogin = [
   body('username')
     .isString()
-    .isLength({ min: 3 })
+    .isLength({ min: 6, max: 30 })
     .withMessage('O nome de usuário não deve possuir menos 3 caracteres.'),
   body('password')
     .isLength({ min: 8 })
@@ -43,11 +43,11 @@ exports.validateUpdateUser = [
     .withMessage('ID de usuário inválido.'),
   body('username')
     .isString()
-    .isLength({ min: 3 })
+    .isLength({ min: 6, max: 30 })
     .withMessage('O nome de usuário deve ter pelo menos 3 caracteres.'),
   body('password')
     .optional()
-    .isLength({ min: 8 })
+    .isLength({ min: 8, max: 60  })
     .withMessage('A senha deve ter pelo menos 8 caracteres.')
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])/)
     .withMessage('A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula e um caractere especial.'),
