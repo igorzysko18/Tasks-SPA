@@ -7,8 +7,10 @@ const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
 app.use(express.json());
 
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/usersRoutes');
+const taskRoutes = require('./routes/tasksRoutes')
 app.use('/users', userRoutes);
+app.use('/tasks', taskRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Rota não encontrada');

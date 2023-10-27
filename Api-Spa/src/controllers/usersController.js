@@ -1,27 +1,37 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const UserModel = require('../models/userModel');
+const UserModel = require('../models/usersModel');
 const secretKey = '788847503fb7054ab1fa63e0ca9e4252';
 
 exports.createUser = (req, res) => {
   let userData = req.body; 
 
-  bcrypt.hash(userData.password, 10, (hashErr, hashedPassword) => {
-    if (hashErr) {
-      return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+  UserModel.findByUsername(userData.username, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao fazer login.' });
     }
-
-    userData.password = hashedPassword;
-
-    UserModel.createUser(userData, (createErr, newUser) => {
-      if (createErr) {
-        return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+    if (!user) {
+      bcrypt.hash(userData.password, 10, (hashErr, hashedPassword) => {
+        if (hashErr) {
+          return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+        }
+    
+        userData.password = hashedPassword;
+    
+        UserModel.createUser(userData, (createErr, newUser) => {
+          if (createErr) {
+            return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+          }
+          res.status(201).json(newUser);
+        });
+      });
+    } else {
+      return res.status(409).json({ error: 'Nome de usuário já cadastrado em nossa base.' });
       }
-      res.status(201).json(newUser);
-    });
   });
 };
+
 
 exports.userLogin = (req, res) => {
     let { username, password } = req.body;
