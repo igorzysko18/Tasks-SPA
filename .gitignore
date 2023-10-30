@@ -1,8 +1,8 @@
 logs/
 *.log
 
-/Api-Spa/node_modules/
-/Api-Spa/spaDb.db
+/spa-backend/node_modules/
+/spa-backend/spaDb.db
 package-lock.json
 
 # Arquivos de ambiente
