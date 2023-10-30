@@ -4,11 +4,11 @@ const db = new sqlite3.Database('spaDb.db');
 const taskModel = {};
 
 taskModel.createTask = (taskData, callback) => {
-  let { title, description, dateTime, durationTime, user_id } = taskData;
+  let { title, description, dateTime, status, durationTime, user_id } = taskData;
   
   db.run(
-    'INSERT INTO tasks (title, description, dateTime, durationTime, user_id) VALUES (?, ?, ?, ?, ?)',
-    [title, description, dateTime, durationTime, user_id],
+    'INSERT INTO tasks (title, description, dateTime, status, durationTime, user_id) VALUES (?, ?, ?, ?, ?, ?)',
+    [title, description, dateTime, status, durationTime, user_id],
     function (err) {
       if (err) {
         callback(err, null);
@@ -30,11 +30,11 @@ taskModel.getTaskById = (taskId, callback) => {
 };
 
 taskModel.updateTask = (taskId, taskData, callback) => {
-  let { title, description, dateTime, durationTime } = taskData;
+  let { title, description, dateTime, status, durationTime } = taskData;
 
   db.run(
-    'UPDATE tasks SET title = ?, description = ?, dateTime = ?, durationTime = ? WHERE id = ?',
-    [title, description, dateTime, durationTime, taskId],
+    'UPDATE tasks SET title = ?, description = ?, dateTime = ?, status = ?, durationTime = ? WHERE id = ?',
+    [title, description, dateTime, status, durationTime, taskId],
     function (err) {
       if (err) {
         callback(err, null);

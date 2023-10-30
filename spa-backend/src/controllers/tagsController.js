@@ -7,7 +7,11 @@ tagController.createTag = (req, res) => {
 
   tagModel.createTag(tagData, (err, newTag) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao criar a tag.' });
+      if (err.message.includes('UNIQUE constraint failed')) {
+        return res.status(409).json({ message: 'Já existe uma tag com o mesmo nome nesta tarefa.' });
+      } else {
+        return res.status(500).json({ message: 'Erro ao criar a tag.' });
+      }    
     }
     res.status(201).json(newTag);
   });
@@ -19,7 +23,7 @@ tagController.updateTag = (req, res) => {
 
   tagModel.updateTag(tagId, updatedData, (err, updatedTag) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao atualizar a tag.' });
+      return res.status(500).json({ message: 'Erro ao atualizar a tag.' });
     }
     res.status(200).json(updatedTag);
   });
@@ -30,7 +34,7 @@ tagController.deleteTag = (req, res) => {
 
   tagModel.deleteTag(tagId, (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao excluir a tag.' });
+      return res.status(500).json({ message: 'Erro ao excluir a tag.' });
     }
     res.status(204).end();
   });
@@ -41,10 +45,10 @@ tagController.findTagById = (req, res) => {
 
   tagModel.findTagById(tagId, (err, tag) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao buscar a tag.' });
+      return res.status(500).json({ message: 'Erro ao buscar a tag.' });
     }
     if (!tag) {
-      return res.status(404).json({ error: 'Tag não encontrada.' });
+      return res.status(404).json({ message: 'Tag não encontrada.' });
     }
     res.status(200).json(tag);
   });
@@ -55,7 +59,7 @@ tagController.findTagsByTaskId = (req, res) => {
   
     tagModel.findTagsByTaskId(taskId, (err, tags) => {
       if (err) {
-        return res.status(500).json({ error: 'Erro ao buscar as tags.' });
+        return res.status(500).json({ message: 'Erro ao buscar as tags.' });
       }
       res.status(200).json(tags);
     });

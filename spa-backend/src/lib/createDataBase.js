@@ -27,6 +27,7 @@ db.serialize(() => {
       dateTime DATETIME,
       durationTime TEXT,
       user_id INTEGER,
+      status INTEGER CHECK (status IN (0, 1)),
       FOREIGN KEY (user_id) REFERENCES users (id)
   )`);
 
@@ -37,7 +38,10 @@ db.serialize(() => {
     id INTEGER PRIMARY KEY,
     title TEXT,
     task_id INTEGER,
-    FOREIGN KEY (task_id) REFERENCES tasks (id)
+    user_id INTEGER,
+    FOREIGN KEY (task_id) REFERENCES tasks (id),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    UNIQUE (title, task_id)
   )`);
   console.log('Tabela de tags criada');
 

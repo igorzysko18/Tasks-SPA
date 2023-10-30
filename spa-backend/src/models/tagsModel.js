@@ -4,11 +4,11 @@ const db = new sqlite3.Database('spaDb.db');
 const tagModel = {};
 
 tagModel.createTag = (tagData, callback) => {
-  const { title, task_id } = tagData;
+  let { title, task_id, user_id } = tagData;
 
   db.run(
-    'INSERT INTO tags (title, task_id) VALUES (?, ?)',
-    [title, task_id],
+    'INSERT INTO tags (title, task_id, user_id) VALUES (?, ?, ?)',
+    [title, task_id, user_id],
     function (err) {
       if (err) {
         callback(err, null);
@@ -20,7 +20,7 @@ tagModel.createTag = (tagData, callback) => {
 };
 
 tagModel.updateTag = (tagId, updatedData, callback) => {
-    const { title, task_id } = updatedData;
+    let { title } = updatedData;
   
     db.run(
       'UPDATE tags SET title = ? WHERE id = ?',
@@ -46,7 +46,7 @@ tagModel.updateTag = (tagId, updatedData, callback) => {
   };
   
   tagModel.findTagById = (tagId, callback) => {
-    const query = 'SELECT * FROM tags WHERE id = ?';
+    let query = 'SELECT * FROM tags WHERE id = ?';
   
     db.get(query, [tagId], (err, tag) => {
       if (err) {
@@ -58,7 +58,7 @@ tagModel.updateTag = (tagId, updatedData, callback) => {
   };
 
 tagModel.findTagsByTaskId = (task_id, callback) => {
-  const query = 'SELECT * FROM tags WHERE task_id = ?';
+  let query = 'SELECT * FROM tags WHERE task_id = ?';
 
   db.all(query, [task_id], (err, tags) => {
     if (err) {

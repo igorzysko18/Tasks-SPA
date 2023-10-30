@@ -13,6 +13,9 @@ exports.validateCreateTask = [
   body('durationTime')
     .matches(/^\d{1,2}:\d{2}$/)
     .withMessage('A duração deve estar no formato de horas.'),
+  body('status')
+    .isInt()
+    .withMessage('Status inválido.'),
   body('user_id')
     .isInt()
     .withMessage('ID do usuário inválido.'),

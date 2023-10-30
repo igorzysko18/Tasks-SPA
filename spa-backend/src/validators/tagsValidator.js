@@ -15,6 +15,15 @@ exports.validateCreateTag = [
       }
       return true;
     }),
+  body('user_id')
+    .isInt()
+    .withMessage('O ID do usuário deve ser um número inteiro.')
+    .custom((value) => {
+      if (value <= 0) {
+        throw new Error('O ID do usuário deve ser maior que zero.');
+      }
+      return true;
+    }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

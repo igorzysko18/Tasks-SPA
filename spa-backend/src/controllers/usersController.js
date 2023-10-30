@@ -9,25 +9,25 @@ exports.createUser = (req, res) => {
 
   userModel.findByUsername(userData.username, (err, user) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao fazer login.' });
+      return res.status(500).json({ message: 'Erro ao fazer login.' });
     }
     if (!user) {
       bcrypt.hash(userData.password, 10, (hashErr, hashedPassword) => {
         if (hashErr) {
-          return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+          return res.status(500).json({ message: 'Erro ao criar o usuário.' });
         }
     
         userData.password = hashedPassword;
     
         userModel.createUser(userData, (createErr, newUser) => {
           if (createErr) {
-            return res.status(500).json({ error: 'Erro ao criar o usuário.' });
+            return res.status(500).json({ message: 'Erro ao criar o usuário.' });
           }
           res.status(201).json(newUser);
         });
       });
     } else {
-      return res.status(409).json({ error: 'Nome de usuário já cadastrado em nossa base.' });
+      return res.status(409).json({ message: 'Nome de usuário já cadastrado em nossa base.' });
       }
   });
 };
@@ -38,21 +38,21 @@ exports.userLogin = (req, res) => {
   
     userModel.findByUsername(username, (err, user) => {
       if (err) {
-        return res.status(500).json({ error: 'Erro ao fazer login.' });
+        return res.status(500).json({ message: 'Erro ao fazer login.' });
       }
       if (!user) {
-        return res.status(401).json({ error: 'Usuário não encontrado.' });
+        return res.status(401).json({ message: 'Usuário não encontrado.' });
       }
       bcrypt.compare(password, user.password, (bcryptErr, passwordMatch) => {
         if (bcryptErr) {
-          return res.status(500).json({ error: 'Erro ao verificar a senha.' });
+          return res.status(500).json({ message: 'Erro ao verificar a senha.' });
         }
   
         if (passwordMatch) {
           let token = jwt.sign({ userId: user.id, userName: user.name }, secretKey, { expiresIn: '1h' });
           return res.status(200).json({ message: 'Login bem-sucedido', token: token, userName: user.name });
         } else {
-          return res.status(401).json({ error: 'Senha incorreta.' });
+          return res.status(401).json({ message: 'Senha incorreta.' });
         }
       });
     });
@@ -64,14 +64,14 @@ exports.userLogin = (req, res) => {
   
     bcrypt.hash(userData.password, 10, (err, hashedPassword) => {
       if (err) {
-        return res.status(500).json({ error: 'Erro ao criar a senha segura.' });
+        return res.status(500).json({ message: 'Erro ao criar a senha segura.' });
       }
 
       userData.password = hashedPassword;
 
         userModel.updateUser(userId, userData, (err, updatedUser) => {
         if (err) {
-          return res.status(500).json({ error: 'Erro ao atualizar a senha do usuário.' });
+          return res.status(500).json({ message: 'Erro ao atualizar a senha do usuário.' });
         }
         res.status(200).json({ message: 'Senha do usuário atualizada com sucesso.', updatedUser });
       });
