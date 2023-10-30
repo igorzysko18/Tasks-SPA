@@ -3,7 +3,7 @@ const tasksModel = require('../models/tasksModel');
 const taskController = {};
 
 taskController.createTask = (req, res) => {
-  let taskData = req.body;
+  let taskData = {...req.body, user_id: req.userId };
 
   tasksModel.createTask(taskData, (err, newTask) => {
     if (err) {

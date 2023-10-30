@@ -13,12 +13,6 @@ exports.validateCreateTask = [
   body('durationTime')
     .matches(/^\d{1,2}:\d{2}$/)
     .withMessage('A duração deve estar no formato de horas.'),
-  body('status')
-    .isInt()
-    .withMessage('Status inválido.'),
-  body('user_id')
-    .isInt()
-    .withMessage('ID do usuário inválido.'),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -42,6 +36,9 @@ exports.validateUpdateTask = [
   body('dateTime')
     .isISO8601()
     .optional(),
+  body('status')
+    .isInt()
+    .withMessage('Status inválido.'),
   body('durationTime')
     .matches(/^\d{1,2}:\d{2}$/)
     .withMessage('A duração deve estar no formato de horas.'),

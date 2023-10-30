@@ -36,9 +36,9 @@ exports.verifyBearerKey = (req, res, next) => {
       return res.status(401).json({ error: 'Bearer Key inválida.' });
     }
 
-    let userIdFromBearerKey = decoded.userId;
+     req.userId = decoded.userId;
 
-    db.get('SELECT id FROM users WHERE id = ?', [userIdFromBearerKey], (err, userRow) => {
+    db.get('SELECT id FROM users WHERE id = ?', [req.userId], (err, userRow) => {
       if (err) {
         return res.status(500).json({ error: 'Erro ao verificar a Bearer Key.' });
       } else if (!userRow) {

@@ -3,7 +3,7 @@ const tagModel = require('../models/tagsModel');
 const tagController = {};
 
 tagController.createTag = (req, res) => {
-  const tagData = req.body;
+  let tagData = {...req.body, user_id: req.userId };
 
   tagModel.createTag(tagData, (err, newTag) => {
     if (err) {
@@ -18,8 +18,8 @@ tagController.createTag = (req, res) => {
 };
 
 tagController.updateTag = (req, res) => {
-  const tagId = req.params.id;
-  const updatedData = req.body;
+  let tagId = req.params.id;
+  let updatedData = req.body;
 
   tagModel.updateTag(tagId, updatedData, (err, updatedTag) => {
     if (err) {
@@ -30,7 +30,7 @@ tagController.updateTag = (req, res) => {
 };
 
 tagController.deleteTag = (req, res) => {
-  const tagId = req.params.id;
+  let tagId = req.params.id;
 
   tagModel.deleteTag(tagId, (err) => {
     if (err) {
@@ -41,7 +41,7 @@ tagController.deleteTag = (req, res) => {
 };
 
 tagController.findTagById = (req, res) => {
-  const tagId = req.params.id;
+  let tagId = req.params.id;
 
   tagModel.findTagById(tagId, (err, tag) => {
     if (err) {
@@ -55,7 +55,7 @@ tagController.findTagById = (req, res) => {
 };
 
 tagController.findTagsByTaskId = (req, res) => {
-    const taskId = req.params.task_id;
+    let taskId = req.params.task_id;
   
     tagModel.findTagsByTaskId(taskId, (err, tags) => {
       if (err) {
