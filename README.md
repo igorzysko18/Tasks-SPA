@@ -1,10 +1,10 @@
-# Tasks-SPA
-Para rodar a api, é necessário rodar os comandos abaixo na pasta spa-backend:
-npm install na pasta spa-backend
-npm run createDB na pasta spa-backend
-npm start
-Para rodar o frontend é necessário rodar os comandos abaixo na pasta spa-frontend:
-npm install
-npm start
+## Para rodar a API (spa-backend):
 
-Foi utilizado a versão 18.16.0 do NodeJs
+1. Execute o comando `npm install` na pasta `spa-backend`.
+2. Execute o comando `npm run createDB` na pasta `spa-backend`.
+3. Execute o comando `npm start` na pasta `spa-backend`.
+
+## Para rodar o Frontend (spa-frontend):
+
+1. Execute o comando `npm install` na pasta `spa-frontend`.
+2. Execute o comando `npm start` na pasta `spa-frontend`.
