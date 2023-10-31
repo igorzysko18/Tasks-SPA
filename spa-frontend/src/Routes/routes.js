@@ -1,7 +1,8 @@
 import React from 'react'
 import Login from '../Pages/Login/index'
-import ProtectedRoutes from './ProtectedRoutes'
 import Cadastro from '../Pages/Cadastro/index'
+import Tarefas from '../Pages/Tarefas/index'
+
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -10,12 +11,7 @@ const Routering = () => {
     <Router>
       <Routes>
         <Route path="*" element={<Login/>} />
-        <Route path="/home" element={
-          <ProtectedRoutes>
-            
-          </ProtectedRoutes>
-          }
-        />
+        <Route path="/tarefas" element={<Tarefas/>}/>
         <Route path="/cadastro" element={<Cadastro/>} />
       </Routes>
     </Router>

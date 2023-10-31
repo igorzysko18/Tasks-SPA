@@ -1,3 +1,7 @@
+const axios = require('axios');
+const NodeCache = require('node-cache');
+const apiCache = new NodeCache({ stdTTL: 600 });
+
 const tasksModel = require('../models/tasksModel');
 
 const taskController = {};
@@ -52,17 +56,53 @@ taskController.deleteTask = (req, res) => {
   });
 };  
 
-  taskController.getTasksByUserId = (req, res) => {
-    let userId = req.params.userId;
-  
+taskController.getTasksByUserId = async (req, res) => {
+  let userId = req.userId;
+
+  const cacheKey = 'holidays';
+  const cachedHolidays = apiCache.get(cacheKey);
+
+  if (cachedHolidays) {
+    const tasks = await fetchDataAndAddHolidays(userId, cachedHolidays);
+    return res.status(200).json(tasks);
+  }
+
+  try {
+    const apiUrl = 'https://date.nager.at/api/v3/PublicHolidays/2023/BR';
+    const response = await axios.get(apiUrl);
+    const holidays = response.data;
+
+    apiCache.set(cacheKey, holidays);
+
+    const tasks = await fetchDataAndAddHolidays(userId, holidays);
+
+    return res.status(200).json(tasks);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao buscar dados de feriados.' });
+  }
+};
+
+async function fetchDataAndAddHolidays(userId, holidays) {
+  const tasks = await new Promise((resolve, reject) => {
     tasksModel.findTasksByUserId(userId, (err, tasks) => {
       if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar tarefas do usuário.' });
+        reject(err);
       }
-  
-      res.status(200).json(tasks);
+
+      tasks.forEach(task => {
+        const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
+        const holiday = holidays.find(dayOff => dayOff.date === taskDate);
+        if (holiday) {
+          task.dayOff = holiday.localName;
+        }
+      });
+
+      resolve(tasks);
     });
-  };
+  });
+
+  return tasks;
+}
 
 
 module.exports = taskController;

@@ -2,14 +2,7 @@ logs/
 *.log
 
 /spa-backend/node_modules/
+/spa-frontend/node_modules/
 /spa-backend/spaDb.db
-package-lock.json
-
-# Arquivos de ambiente
-.env
-.env.local
-.env.*.local
-.env.development
-.env.test
-.env.production
-.env.local
+/spa-backend/package-lock.json
+/spa-frontend/package-lock.json

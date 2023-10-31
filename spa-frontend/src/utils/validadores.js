@@ -4,8 +4,7 @@ const validarNomeUsuario = (nome) => {
 }
 
 const validarSenha = (senha) => {
-    console.log(senha?.toString().length > 8)
-    return senha?.toString().length > 8
+    return senha?.toString().length >= 8
 }
 
 const validarConfirmarSenha = (senha, confirmarSenha) => {

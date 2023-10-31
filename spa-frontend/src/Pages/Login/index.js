@@ -16,17 +16,13 @@ const Login = () => {
 
     const handleSubmit = async () => {
         try {
-            console.log('form', form)   
             setLoading(true)
             const response = await userService.login(form)
-            console.log('response do login', response);
             if (response === true) {
-                navigate('/home')
+                navigate('/tarefas')
             }
-            alert('Login')
             setLoading(false)
         } catch (err) {
-            console.log(err)
             alert('Erro no login.')
         }
     }
@@ -36,7 +32,6 @@ const Login = () => {
     }
 
     const handleChange =(event) => {
-        console.log(event.target.name, event.target.value)
         setForm({...form, [event.target.name]: event.target.value})
     }
 

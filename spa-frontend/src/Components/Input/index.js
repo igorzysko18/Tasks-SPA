@@ -5,7 +5,8 @@ const Input = ({
   name,
   placeholder,
   onChange,
-  type
+  type,
+  value
 }) => {
   return ( 
     <InputCustomizado
@@ -13,8 +14,9 @@ const Input = ({
       placeholder={placeholder}
       onChange={onChange}
       type={type}
+      value={value}
     />
    );
 }
- 
+
 export default Input;

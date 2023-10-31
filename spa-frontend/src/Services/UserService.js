@@ -8,19 +8,16 @@ export default class UserServices {
   }
 
   async login (dados) {
-    console.log(2,dados,process.env.REACT_APP_API)
     const {data} = await this.axios.post('/users/login', dados, { headers: {'Authorization': 'api-key ' + process.env.REACT_APP_API_KEY}})
-    console.log(data)
     if (data) {
       localStorage.setItem("token", data.token)
       return true
     }
-
     return
   }
 
   async cadastrar (dados) {
-    return this.axios.post('/user', dados)
+    return this.axios.post('/users', dados, { headers: {'Authorization': 'api-key ' + process.env.REACT_APP_API_KEY}})
   }
 
   usuarioAutenticado () {

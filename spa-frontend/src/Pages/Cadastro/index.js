@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Container, Form, SubContainerSign  } from "./styles";
 import Input from "../../Components/Input/index";
 import Botao from "../../Components/Botao/index"
-import { validarNomeUsuario, validarSenha } from "../../utils/validadores";
+import { validarConfirmarSenha, validarNomeUsuario, validarSenha } from "../../utils/validadores";
 import UserService from '../../Services/UserService'
 import { NavLink, useNavigate } from 'react-router-dom'
 
@@ -10,33 +10,31 @@ import { NavLink, useNavigate } from 'react-router-dom'
 const userService = new UserService()
 
 const Login = () => {
-    const [loading, setLoading] = useState()
+    const [setLoading] = useState()
     const [form, setForm] = useState([{}])
     const navigate = useNavigate()
 
     const handleSubmit = async () => {
         try {
-            console.log('form', form)   
             setLoading(true)
-            const response = await userService.login(form)
-            console.log('response do login', response);
+            const response = await userService.cadastrar(form)
             if (response === true) {
-                navigate('/home')
+                navigate('/*')
             }
-            alert('Login')
             setLoading(false)
         } catch (err) {
-            console.log(err)
             alert('Erro no login.')
         }
     }
 
     const validadorInput = () => {
-        return validarNomeUsuario(form.username) && validarSenha(form.password)
+        if (!validarSenha(form.password)) alert('A senha deve conter pelo menos um dígito, uma letra minúscula, uma letra maiúscula e um caractere especial e 8 caracteres no total.')
+        return validarNomeUsuario(form.username) 
+        && validarSenha(form.password) 
+        & validarConfirmarSenha(form.password, form.passwordConfirmed)
     }
 
     const handleChange =(event) => {
-        console.log(event.target.name, event.target.value)
         setForm({...form, [event.target.name]: event.target.value})
     }
 
@@ -57,7 +55,7 @@ const Login = () => {
                     type='password'
                 />
                 <Input
-                    name='password'
+                    name='passwordConfirmed'
                     placeholder='Confirme a sua senha'
                     onChange={handleChange}
                     type='password'
@@ -66,7 +64,7 @@ const Login = () => {
                     type='submit'
                     text='Cadastrar'
                     onClick={handleSubmit}
-                    disabled={loading === true || !validadorInput()}
+                    disabled={!validadorInput()}
                 />
                 <SubContainerSign>
                     <NavLink to="*">Já possui conta?Faça o login!</NavLink>

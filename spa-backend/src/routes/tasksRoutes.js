@@ -6,7 +6,7 @@ const { verifyBearerKey } = require('../lib/auth');
 
 router.post('', verifyBearerKey, tasksValidator.validateCreateTask, taskController.createTask);
 router.get('/:id', verifyBearerKey, taskController.getTaskById);
-router.get('/user/:userId', verifyBearerKey, taskController.getTasksByUserId);
+router.get('', verifyBearerKey, taskController.getTasksByUserId);
 router.put('/:id', verifyBearerKey, tasksValidator.validateUpdateTask, taskController.updateTask);
 router.delete('/:id', verifyBearerKey,tasksValidator.validateDeleteTask, taskController.deleteTask);
 
