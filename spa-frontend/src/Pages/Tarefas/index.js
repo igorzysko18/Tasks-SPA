@@ -64,7 +64,6 @@ const Tarefas = () => {
             if (isEditing) {
                 
                 const response = await taskService.editar(currentTask.id, form);
-
                 if (response.status === 200) {
                     const updatedTasks = await taskService.buscar();
                     setTarefas(updatedTasks.data || []);

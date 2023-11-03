@@ -59,22 +59,44 @@ taskController.deleteTask = (req, res) => {
 taskController.getTasksByUserId = async (req, res) => {
   let userId = req.userId;
 
-  const cacheKey = 'holidays';
-  const cachedHolidays = apiCache.get(cacheKey);
-
-  if (cachedHolidays) {
-    const tasks = await fetchDataAndAddHolidays(userId, cachedHolidays);
-    return res.status(200).json(tasks);
-  }
-
   try {
-    const apiUrl = 'https://date.nager.at/api/v3/PublicHolidays/2023/BR';
-    const response = await axios.get(apiUrl);
-    const holidays = response.data;
+    const tasks = await new Promise((resolve, reject) => {
+      tasksModel.findTasksByUserId(userId, (err, tasks) => {
+        if (err) {
+          reject(err);
+        }
 
-    apiCache.set(cacheKey, holidays);
+        resolve(tasks);
+      });
+    });
 
-    const tasks = await fetchDataAndAddHolidays(userId, holidays);
+    const holidaysByYear = {}; // Objeto para armazenar feriados por ano
+
+    for (const task of tasks) {
+      const taskYear = new Date(task.dateTime).getFullYear();
+      const cacheKey = `holidays-${taskYear}`;
+      const cachedHolidays = apiCache.get(cacheKey);
+
+      if (!holidaysByYear[taskYear]) {
+        if (cachedHolidays) {
+          holidaysByYear[taskYear] = cachedHolidays;
+        } else {
+          const apiUrl = `https://date.nager.at/api/v3/PublicHolidays/${taskYear}/BR`;
+          const response = await axios.get(apiUrl);
+          const holidays = response.data;
+          holidaysByYear[taskYear] = holidays;
+          apiCache.set(cacheKey, holidays);
+        }
+      }
+
+      const holidays = holidaysByYear[taskYear];
+
+      const taskDate = new Date(task.dateTime).toISOString().split('T')[0];
+      const holiday = holidays.find(dayOff => dayOff.date === taskDate);
+      if (holiday) {
+        task.dayOff = holiday.localName;
+      }
+    }
 
     return res.status(200).json(tasks);
   } catch (error) {

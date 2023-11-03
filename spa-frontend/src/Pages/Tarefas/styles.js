@@ -8,13 +8,14 @@ export const Container = styled.div`
   background-color: #383838;
   flex: 1;
   padding: 20px;
+  flex-wrap: wrap;
 `
 
 export const Form = styled.form`
   display: flex;
   padding: 3rem;
   flex-direction: column;
-  align-items: flex-start; /* Alinhe o conteúdo à esquerda */
+  align-items: flex-start;
   justify-content: center;
   background-color: #201d1d;
   border-radius: 5px;
@@ -48,7 +49,8 @@ export const SubContainerSign = styled.div`
 `
 
 export const Div = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   flex-direction: column; 
   align-items: center; 
   gap: 20px 0px; 
@@ -68,6 +70,17 @@ export const CardList = styled.div`
   align-items: center; 
   gap: 16px; 
   background-color: #383838;
-  
+
 `;
 
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 16px;
+  background-color: #383838;
+  border-radius: 5px;
+  width: 100%;
+  padding: 16px;
+  max-width: 800px;
+  overflow: auto;
+`;

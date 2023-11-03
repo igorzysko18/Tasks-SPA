@@ -14,7 +14,7 @@ function RectangularCard({
     <StyledCard variant="outlined" style={{ margin: '16px' }}>
     <CardContent>
       <Typography variant="h6" component="div">
-        {values.title}
+        {values.title.slice(0,31)}
       </Typography>
       {(values.dayOff) && (
         <Typography variant="body2" color="#4caf50">
@@ -33,7 +33,7 @@ function RectangularCard({
       <Button variant="contained" color="primary" onClick={onEditClick}>
         Editar
       </Button>
-      <Button variant="contained" color="secondary" onClick={onDeleteClick} disabled={loading}>
+      <Button variant="contained" color="error" onClick={onDeleteClick} disabled={loading}>
         Excluir
       </Button>
     </CardContent>
