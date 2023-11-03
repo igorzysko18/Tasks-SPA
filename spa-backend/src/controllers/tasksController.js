@@ -70,7 +70,7 @@ taskController.getTasksByUserId = async (req, res) => {
       });
     });
 
-    const holidaysByYear = {}; // Objeto para armazenar feriados por ano
+    const holidaysByYear = {};
 
     for (const task of tasks) {
       const taskYear = new Date(task.dateTime).getFullYear();
